@@ -1,0 +1,15 @@
+/* Origin: https://fontesk.com/galhau-display-font/ */
+/* License: ./galhau-license.txt */
+
+@font-face {
+  src: url(./galhau-regular.ttf);
+  font-family: "Galhau";
+  font-display: swap;
+}
+
+@font-face {
+  src: url(./galhau-heavy.ttf);
+  font-family: "Galhau";
+  font-weight: bold;
+  font-display: swap;
+}

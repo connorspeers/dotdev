@@ -1,0 +1,8 @@
+services:
+
+  blog:
+    build:
+      target: dev
+    volumes:
+      - ./blog:/app
+

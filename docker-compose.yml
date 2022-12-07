@@ -1,0 +1,20 @@
+services:
+
+  proxy:
+    restart: always
+    image: caddy:2-alpine
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "127.0.0.1:8000:8000"
+  
+  blog:
+    restart: always
+    build:
+      context: ./blog
+
+volumes:
+  caddy_data:
+  caddy_config:

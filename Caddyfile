@@ -1,0 +1,4 @@
+http://localhost:8000, speers.dev {
+	tls internal
+	reverse_proxy blog:8000
+}
