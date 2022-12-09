@@ -1,7 +1,9 @@
 import { tin, http } from "./deps.ts";
 
+await tin.prep("public");
+
 const app = tin.router({
-  "*": tin.assets(),
+  "*": tin.assets("public"),
 });
 
 http.serve(app, {
