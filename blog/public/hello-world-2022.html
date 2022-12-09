@@ -4,8 +4,8 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Connor Speers is a software engineer based in Michigan.">
-  <title>Hello, World! 2022</title>
+  <meta name="description" content="Connor is a software engineer based in Michigan.">
+  <title>Hello, World! (2022)</title>
 
   <link rel="stylesheet" href="./fonts/inter.css">
   <link rel="stylesheet" href="./fonts/galhau.css">
@@ -201,7 +201,7 @@
           autoplay
           loop
         ></video>
-        <a href="https://speers.dev">
+        <a href="./index.html">
           <img
             src="./media/headshot-4.png"
             alt="My portrait. I'm smiling at the camera and wearing my favorite beanie. Texas is in the background; barren, shallow hills with sparse vegetation as far as the eye can see."
@@ -213,7 +213,7 @@
           <time datetime="2022-12-06">Tuesday, December 6th, 2022</time>
         </p>
         <h1>
-          <a href="https://speers.dev/hello-world-2022">Hello, World!</a>
+          <a href="./hello-world-2022.html">Hello, World!</a>
         </h1>
       </div>
     </header>
@@ -267,10 +267,10 @@
       </details> -->
 
       <details><summary>Meta</summary>
-        <p>I made the header using a video I took while hiking back in October. Using <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank">DaVinci Resolve</a>, I stabilized it and moved a few seconds of footage from beginning to the end with a fade transition in-between. Then, to cover the visual seams with some silly aesthetic, I added the mosaic filter. Ta-da: Dollar store infinite looping pixelated video headers. :)</p>
+        <p>I made the header using a video I took while hiking back in October. Using <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank">DaVinci Resolve</a>, I stabilized it and moved a few seconds of footage from the beginning to the end with a fade transition in-between. Then, to cover the visual seams with some silly aesthetic, I added the mosaic filter. Ta-da: Dollar store infinite looping pixelated video headers. :)</p>
         <p>After exporting the video, I passed the result through <a href="https://handbrake.fr/" target="_blank">HandBrake</a> to downsize it for the web. (Did you know MP4s with the right codec/resolution are wayyy smaller than the equivalent GIF? I didn't! I created a GIF header initially and was baffled by the file size... thank the W3C gods for giving us the <code>&lt;video&gt;</code> element.)</p> 
         <p>The layout of this page and format of this blog moving forward are inspired by a personal blog that recently hit my radar, <a href="https://aegir.org" target="_blank">aegir.org</a>. I'll take things in my own direction after this, but Aegir gets most credit for the look of this first post. His blog is a beautiful source of inspiration for design as well as writing, illustration, and photography. Every page has it's own aesthetic, usually tailored to the story he's trying to tell. Browsing through it feels like going on an adventure. It can be found in the <a href="https://ooh.directory" target="_blank">ooh.directory</a>, but I first saw a link to it on Mastodon.</p>
-        <p>This post is just plain HTML/CSS. In production, the static files are served by a <a href="https://docker.com" target="_blank">Dockerized</a> <a href="https://deno.land" target="_blank">Deno</a> application, routed through an exposed <a href="https://caddyserver.org" target="_blank">Caddy</a> container. The containers are managed with <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a>, and everything runs on a custom VPS I set up for $5/mo. Then (last thing I promise), the VPS is proxied and cached by <a href="https://cloudflare.com" target="_blank">Cloudflare</a> to protect against DDoS (as if I'm that important) as well as reduce load on the VPS and decrease page load times by serving the audience <a href="https://en.wikipedia.org/wiki/Edge_computing" target="_blank">"at the edge"</a>. (Not a sponsor lol, I just really appreciate Cloudflare.) All this extra work is prep for future projects; GitHub pages would've worked just as well, but I know I'll want to play with server stuff later on.</p>
+        <p>This post is just plain HTML/CSS. In production, the static files are served by a <a href="https://docker.com" target="_blank">Dockerized</a> <a href="https://deno.land" target="_blank">Deno</a> application, routed through an exposed <a href="https://caddyserver.com" target="_blank">Caddy</a> container. The containers are managed with <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a>, and everything runs on a custom VPS I set up for $5/mo. Then (last thing I promise), the VPS is proxied and cached by <a href="https://cloudflare.com" target="_blank">Cloudflare</a> to protect against DDoS (as if I'm that important) as well as reduce load on the VPS and decrease page load times by serving the audience <a href="https://en.wikipedia.org/wiki/Edge_computing" target="_blank">"at the edge"</a>. (Not a sponsor lol, I just really appreciate Cloudflare.) All this extra work is prep for future projects; GitHub pages would've worked just as well, but I know I'll want to play with server stuff later on.</p>
         <p>I think I covered everything. Check out the <a href="https://github.com/connorspeers/garage" target="_blank">repo</a>, if you're curious. 🍪</p>
       </details>
     </main>

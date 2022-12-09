@@ -1,16 +1,9 @@
 import { tin, http } from "./deps.ts";
 
-function redirect(to: string) {
-  return (req: Request) => {
-    const curr = new URL(req.url);
-    const next = new URL(to, curr.origin);
-    return Response.redirect(next.href);
-  };
-}
+await tin.prep("public");
 
 const app = tin.router({
-  "index": redirect("/hello-world-2022"),
-  "*": tin.assets(),
+  "*": tin.assets("public"),
 });
 
 http.serve(app, {
