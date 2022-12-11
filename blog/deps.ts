@@ -1,2 +1,2 @@
-export * as tin from "https://raw.githubusercontent.com/connorspeers/tin/2cb4a128d0347b7aa95fa43aa9867503a53c9e9d/mod.ts";
+export * as tin from "https://raw.githubusercontent.com/connorspeers/tin/f8bc2a7aabb47f824b1be0617a6b98a32fa5a419/mod.ts";
 export * as http from "https://deno.land/std@0.166.0/http/mod.ts";
