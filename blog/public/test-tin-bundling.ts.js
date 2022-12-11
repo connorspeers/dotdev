@@ -1,2 +1,0 @@
-alert("hi");
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpbGU6Ly8vYXBwL3B1YmxpYy90ZXN0LXRpbi1idW5kbGluZy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJhbGVydChcImhpXCIpO1xuIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0ifQ==

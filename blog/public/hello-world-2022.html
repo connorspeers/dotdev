@@ -4,7 +4,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Connor is a software engineer based in Michigan.">
+  <meta name="description" content=" from Michigan.">
   <title>Hello, World! (2022)</title>
 
   <link rel="stylesheet" href="./fonts/inter.css">
@@ -21,6 +21,7 @@
       --faded-brown: #4A4440;
       --not-white: #F3F3F1;
       --green: #5E793B;
+      --orange: #ca7020;
     }
 
     html {
@@ -38,7 +39,7 @@
     }
 
     a {
-      color: #ca7020;
+      color: var(--orange);
     }
 
     h1,
@@ -184,6 +185,24 @@
     .wrap {
       margin: 2rem min(2.5rem, 5vw);
     }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+    }
+    footer a {
+      color: white;
+      text-decoration-style: dashed;
+      text-decoration-color: var(--orange);
+      text-underline-offset: 0.35em;
+      opacity: 0.5;
+      margin-top: 1.5rem;
+    }
+    footer a:hover {
+      opacity: 1;
+    }
   </style>
 
 </head>
@@ -275,6 +294,11 @@
       </details>
     </main>
   </article>
+
+  <footer>
+    <div></div>
+    <a href="./jukebox.html">Jukebox &rarr;</a>
+  </footer>
 
 </body>
 </html>
