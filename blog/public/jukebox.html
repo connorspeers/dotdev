@@ -11,6 +11,12 @@
     jukebox(document.querySelector("main"));
   </script>
 
+  <!--
+    I know, I know... This is an absolute mess. If you'd derive value from me
+    cleaning this up, let me know and I'll do just that. :)
+    
+    - connor@speers.dev
+  -->
   <style>
     * {
       margin: 0;
@@ -31,6 +37,7 @@
       --gray: #555;
       --off-white: #f0f0f0;
       --green: #29ab56;
+      --yellow: #f48c06;
     }
 
     body {
@@ -40,7 +47,6 @@
       min-height: 100vh;
       background: var(--darker-gray);
       color: var(--off-white);
-      padding: 2rem;
     }
 
     button {
@@ -48,11 +54,13 @@
       color: var(--off-white);
       font: inherit;
       border: 0;
-      border-radius: 3rem;
+      border-radius: 10rem;
       cursor: pointer;
       padding: 0.5em 1em;
-      font-weight: 700;
-      letter-spacing: 0.022em;
+      letter-spacing: 0.03em;
+    }
+    button:disabled {
+      cursor: default;
     }
 
     a {
@@ -62,7 +70,7 @@
       text-decoration-style: dashed;
     }
 
-    .noscript {
+    .sources {
       font-size: 1.5rem;
       opacity: 0;
       animation-name: fade-in;
@@ -73,41 +81,69 @@
     @keyframes fade-in {
       to { opacity: 1; }
     }
-    .noscript dt {
+    .sources dt {
       font-weight: 700;
       color: var(--gray);
     }
-    .noscript ul {
+    .sources ul {
       margin: 2rem 0;
       margin-left: 4rem;
       font-weight: 400;
       list-style-type: "–   ";
       text-align: left;
     }
-    .noscript li {
+    .sources li {
       margin-bottom: 1rem;
     }
-    .noscript b {
+    .sources b {
       color: var(--off-white);
       margin-right: 0.25em;
+    }
+
+    .flow > * + * {
+      margin-top: 2rem;
     }
 
     .wrap {
       width: 100%;
       max-width: 40rem;
+      margin: 0 auto;
+      position: relative;
+      padding: 2rem;
     }
 
     .app {
-      margin-bottom: auto;
+      width: 100%;
       position: relative;
+      overflow-x: hidden;
+      flex: 1 0;
     }
 
+    .spotify {
+      width: 100%;
+      position: relative;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: var(--dark-gray);
+    }
+
+    .new-message {
+      opacity: 0.75;
+      text-align: center;
+      margin-top: 2rem;
+      margin-bottom: -0.75rem;
+      transition: opacity 0.3s;
+    }
+    .new-message.hide {
+      opacity: 0;
+    }
     .new-track {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 2rem;
+      left: 2rem;
       opacity: 1;
       transition: opacity 0.3s, transform 0.3s;
+      width: calc(100% - 4rem);
     }
     .new-track.ooh,
     .new-track.meh {
@@ -135,19 +171,36 @@
       opacity: 0;
     }
     .new-buttons button {
-      width: calc(50% - 1rem);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: calc(50% - 0.75rem);
       position: relative;
+    }
+    .new-buttons button:before {
+      display: none;
+      position: absolute;
+    }
+    .new-buttons button:first-child::before {
+      content: "←";
+      left: 1em;
+      opacity: 0.5;
+    }
+    .new-buttons button:last-child::before {
+      content: "→";
+      right: 1em;
+      opacity: 1;
+    }
+    @media (min-width: 640px) {
+      .new-buttons button:before {
+        display: block;
+      }
     }
 
     footer {
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 1.5rem;
       width: 100%;
+      padding: 1.5rem;
     }
     footer a {
       opacity: 0.35;
@@ -155,27 +208,95 @@
     footer a:hover {
       opacity: 1;
     }
+
+    .old {
+      width: 100%;
+      position: relative;
+    }
+    .old.leaving {
+      animation-name: zoom;
+      animation-direction: reverse;
+      animation-duration: 0.15s;
+      animation-fill-mode: both;
+    }
+    .old-list {
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .old-list.active {
+      height: auto;
+      padding: 2rem;
+      animation: zoom;
+      animation-duration: 0.15s;
+      animation-fill-mode: both;
+    }
+    @keyframes zoom {
+      from {
+        transform: scale(0.75);
+        opacity: 0;
+      }
+      to {
+        transform: none;
+        opacity: 1;
+      }
+    }
+
+    .nav {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      width: 100%;
+      margin: 2rem auto 0 auto;
+      animation-name: fade;
+      animation-duration: 0.15s;
+      animation-fill-mode: both;
+    }
+    .nav button {
+      padding: 0.5rem 3rem;
+      background: transparent;
+      font-size: 1.5rem;
+      transition: background-color 0.3s;
+    }
+    .nav button.active {
+      background: var(--nav-color);
+    }
+    .nav button + button {
+      margin-left: 1rem;
+    }
+    .nav p {
+      opacity: 0.5;
+    }
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 
 </head>
 <body>
 
-  <!-- TODO: Header with h1 -->
+  <!-- TODO: header + h1 -->
 
-  <main class="app wrap">
-    <dl class="sources noscript">
+  <main class="app">
+    <dl class="sources">
       <dt>
         <time datetime="2022-12-11">Sunday, December 11, 2022</time>
         <ul>
           <li><a href="https://open.spotify.com/track/5MnJYDuaE1DpPkNrIQQZAO" target="spotify"><b>Native Tongue</b></a> by Quinn XCII</li>
+          <li><a href="https://open.spotify.com/track/16DhvbuyvJob4Q9GHNYu2n" target="spotify"><b>She Hates Me</b></a> by Puddle of Mudd</li>
           <li><a href="https://open.spotify.com/track/07ElML4j2iR5k1E6C0Uqzj" target="spotify"><b>Space Ghost Coast to Coast</b></a> by Glass Animals</li>
+          <li><a href="https://open.spotify.com/track/4bSucYD8PDw1E3ZRJk6DP6" target="spotify"><b>Antidote</b></a> by Tülpa & BLANKTS</li>
+          <li><a href="https://open.spotify.com/track/58qCmgNAq1m0txBgLVAnRs?si=7cb20b29ad424f43" target="spotify"><b>Tastes Like Chocolate</b></a> by Geordie Kieffer</li>
+          <li><a href="https://open.spotify.com/track/7LJF6AtijSniUJpmZTqKRj" target="spotify"><b>Kill Your Heroes</b></a> by AWOLNATION</li>
+          <li><a href="https://open.spotify.com/track/0muK9BAzu2TJXQgWPsEj6e" target="spotify"><b>Separate Ways (Worlds Apart) - Bryce Miller/Alloy Tracks Remix</b></a> by Journey, Steve Perry</li>
         </ul>
       </dt>
     </dl>
   </main>
 
   <footer>
-    <a href="./hello-world-2022.html">&larr; Hello, World!</a>
+    <a title="Previous post" href="./hello-world-2022.html">Hello, World!</a>
   </footer>
 
 </body>

@@ -32,11 +32,6 @@
     body {
       background: var(--faded-brown);
     }
-    @media (min-width: 768px) {
-      body {
-        padding: 2rem;
-      }
-    }
 
     a {
       color: var(--orange);
@@ -99,7 +94,6 @@
 
     .doc {
       width: 100%;
-      max-width: 768px;
       background: var(--not-white);
       box-shadow:
         0 3rem 4rem rgba(0,0,0,0.25),
@@ -111,6 +105,7 @@
     }
     @media (min-width: 768px) {
       .doc {
+        max-width: min(768px, 90%);
         border-radius: 0.5rem;
         margin: 2rem auto;
       }
@@ -190,7 +185,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.5rem;
+      padding: 4rem 1.5rem 1.5rem 1.5rem;
     }
     footer a {
       color: white;
@@ -198,7 +193,6 @@
       text-decoration-color: var(--orange);
       text-underline-offset: 0.35em;
       opacity: 0.5;
-      margin-top: 1.5rem;
     }
     footer a:hover {
       opacity: 1;
@@ -297,7 +291,7 @@
 
   <footer>
     <div></div>
-    <a href="./jukebox.html">Jukebox &rarr;</a>
+    <a title="Next post" href="./jukebox.html">Jukebox</a>
   </footer>
 
 </body>

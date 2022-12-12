@@ -22,11 +22,15 @@ export function jukebox(root: HTMLElement) {
     const datetime = time.getAttribute("datetime")!;
     for (const li of Array.from(dt.querySelectorAll("li"))) {
       const id = li.querySelector("a")!.href.split("/track/")[1];
+      const state = self.localStorage.getItem(`jukebox-${id}`);
       tracks.push({
         id,
         date,
         datetime,
-        state: null,
+        state: (
+          state && (["ooh", "meh"].includes(state)) ? state as TrackState
+          : null
+        ),
       });
     }
   }
@@ -42,27 +46,39 @@ function App({ tracks: _tracks }: {
 
   const newTracks = tracks.filter(t => !t.state);
 
+  const update = (track: Track) => {
+    if (track.state) {
+      self.localStorage.setItem(`jukebox-${track.id}`, track.state);
+    } else {
+      self.localStorage.removeItem(`jukebox-${track.id}`);
+    }
+    setTracks(tracks.map(t => (
+      t.id === track.id ? track
+      : t
+    )));
+  };
+
   return <>
     {!!newTracks.length && (
       <NewTracks
         top={newTracks[0]}
         next={newTracks[1]}
-        swipe={(state: TrackState) => {
-          const update = { ...newTracks[0], state };
-          setTracks(tracks.map(t => (
-            t.id === newTracks[0].id ? update
-            : t
-          )));
-        }}
+        update={update}
+      />
+    )}
+    {!newTracks.length && (
+      <OldTracks
+        tracks={tracks}
+        update={update}
       />
     )}
   </>;
 }
 
-function NewTracks({ top, next, swipe }: {
+function NewTracks({ top, next, update }: {
   top: Track;
   next?: Track;
-  swipe: (state: TrackState) => void;
+  update: (track: Track) => void;
 }) {
   const [state, setState] = useState<TrackState | null>(null);
 
@@ -73,59 +89,127 @@ function NewTracks({ top, next, swipe }: {
     setState(newState);
     setTimeout(() => {
       setState(null);
-      swipe(newState);
+      update({ ...top, state: newState });
     }, 300); // Transition duration from CSS
   };
 
   return <>
-    {
-      // Using the "key" prop prevents Preact from re-using iframe elements,
-      // which would cause all kinds of problems
-    }
-    {next && (
+    <p class={cx("new-message", state && !next && "hide")}>
+      New songs!
+    </p>
+    <div class="new wrap">
+      {
+        // Using the "key" prop prevents Preact from re-using iframe elements,
+        // which would cause all kinds of problems
+      }
+      {next && (
+        <Spotify
+          key={next.id}
+          id={next.id}
+          class={cx("new-track", !state && "next")}
+          hidden
+        />
+      )}
       <Spotify
-        key={next.id}
-        id={next.id}
-        class={cx("new-track", !state && "next")}
-        hidden
+        key={top.id}
+        id={top.id}
+        class={cx("new-track", state)}
       />
-    )}
-    <Spotify
-      key={top.id}
-      id={top.id}
-      class={cx("new-track", state)}
-    />
-    <div style="height:352px">&nbsp;</div> {/* Placeholder */}
-    <nav class={cx("new-buttons", !next && state && "fade")}>
-      <button
-        style="color:#aaa"
-        onClick={() => _swipe("meh")}
-      >meh.</button>
-      <button
-        style="background:var(--green)"
-        onClick={() => _swipe("ooh")}
-      >ooh!</button>
-    </nav>
+      <div style="height:352px">&nbsp;</div> {/* Placeholder */}
+      <nav class={cx("new-buttons", !next && state && "fade")}>
+        <button
+          onClick={() => _swipe("meh")}
+        >meh</button>
+        <button
+          style="font-weight:700; background:var(--green)"
+          onClick={() => _swipe("ooh")}
+        >ooh!</button>
+      </nav>
+    </div>
   </>;
 }
 
-function Spotify({ id, class: cls, hidden }: {
+function OldTracks({ tracks, update }: {
+  tracks: Track[];
+  update: (track: Track) => void;
+}) {
+  const [state, setState] = useState<TrackState>("ooh");
+  const [leaving, setLeaving] = useState(false);
+
+  const ooh = tracks.filter(t => t.state === "ooh");
+  const meh = tracks.filter(t => t.state === "meh");
+
+  const transition = (newState: TrackState) => {
+    if (state === newState) {
+      return;
+    }
+    setLeaving(true);
+    setTimeout(() => {
+      setLeaving(false);
+      setState(newState);
+    }, 100); // Matches CSS animation duration
+  };
+
+  return <>
+    <nav
+      class="nav"
+      style={`
+        --nav-color: var(${state === "ooh" ? "--green" : "--dark-gray"});
+      `}
+    >
+      <button
+        class={cx(state === "meh" && !leaving && "active")}
+        onClick={() => transition("meh")}
+      >meh</button>
+      <button
+        class={cx(state === "ooh" && !leaving && "active")}
+        style="font-weight:700"
+        onClick={() => transition("ooh")}
+      >ooh!</button>
+    </nav>
+    <div class={cx("old", leaving && "leaving")}>
+      <section
+        class={cx(
+          "wrap flow old-list",
+          state === "ooh" && "active",
+        )}
+      >
+        {ooh.map(t => (
+          <Spotify class="old-track" id={t.id} small />
+        ))}
+      </section>
+      <section
+        class={cx(
+          "wrap flow old-list",
+          state === "meh" && "active",
+        )}
+      >
+        {meh.map(t => (
+          <Spotify class="old-track" id={t.id} small />
+        ))}
+      </section>
+    </div>
+  </>;
+}
+
+function Spotify({ id, class: cls, hidden, small }: {
   class: string;
   id: string;
   hidden?: boolean;
+  small?: boolean;
 }) {
-  return (
-    <iframe
-      class={cls}
-      style="border-radius:12px"
-      src={`https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`}
-      width="100%"
-      height="352"
-      frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
-      aria-hidden={hidden}
-      allowFullScreen
-    ></iframe>
-  )
+  return <>
+    <div class={cx("spotify", cls)}>
+      <iframe
+        src={`https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`}
+        width="100%"
+        height={small ? "152" : "352"}
+        frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        aria-hidden={hidden}
+        allowFullScreen
+      ></iframe>
+    </div>
+  </>;
 }
